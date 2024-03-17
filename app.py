@@ -10,7 +10,7 @@ def index():
     return render_template('index.html')
 
 # Route for admin_panel.html
-@app.route('/admin_panel')
+@app.route('/admin-panel')
 def admin_panel():
     # Fetch admin_panel.html content from URL
     admin_panel_url = "https://foodorderadmin.onrender.com/admin_panel.html"  # Replace with actual URL
