@@ -1,27 +1,35 @@
+from flask import Flask, render_template
 from bs4 import BeautifulSoup
 import requests
 
-# Read admin_panel.html and extract items list
-with open('admin_panel.html', 'r', encoding='utf-8') as admin_file:
-    admin_html = admin_file.read()
+app = Flask(__name__)
 
-admin_soup = BeautifulSoup(admin_html, 'html.parser')
-items_list = admin_soup.find_all('div', class_='item')
+# Route for index.html
+@app.route('/')
+def index():
+    # Read index.html
+    with open('index.html', 'r', encoding='utf-8') as index_file:
+        index_content = index_file.read()
+    return index_content
 
-# Update index.html with the items list
-with open('index.html', 'r', encoding='utf-8') as index_file:
-    index_html = index_file.read()
+# Route for admin_panel.html
+@app.route('/admin_panel')
+def admin_panel():
+    # Fetch admin_panel.html content from URL
+    admin_panel_url = "https://example.com/admin_panel.html"  # Replace with actual URL
+    response = requests.get(admin_panel_url)
 
-index_soup = BeautifulSoup(index_html, 'html.parser')
-container = index_soup.find('div', class_='inner')
+    if response.status_code == 200:
+        admin_html = response.text
 
-# Clear existing items in container
-container.clear()
+        # Parse admin_panel.html and extract items list
+        admin_soup = BeautifulSoup(admin_html, 'html.parser')
+        items_list = admin_soup.find_all('div', class_='item')
 
-# Append new items to container
-for item in items_list:
-    container.append(item)
+        # Render admin_panel.html with items list
+        return render_template('admin_panel.html', items=items_list)
+    else:
+        return "Failed to fetch admin_panel.html content. Status code: {}".format(response.status_code)
 
-# Write the updated index.html
-with open('index.html', 'w', encoding='utf-8') as updated_index_file:
-    updated_index_file.write(str(index_soup))
+if __name__ == '__main__':
+    app.run(debug=True)
