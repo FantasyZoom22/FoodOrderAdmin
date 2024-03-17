@@ -16,7 +16,7 @@ def index():
 @app.route('/admin_panel')
 def admin_panel():
     # Fetch admin_panel.html content from URL
-    admin_panel_url = "https://example.com/admin_panel.html"  # Replace with actual URL
+    admin_panel_url = "https://foodorderadmin.onrender.com/admin_panel.html"  # Replace with actual URL
     response = requests.get(admin_panel_url)
 
     if response.status_code == 200:
