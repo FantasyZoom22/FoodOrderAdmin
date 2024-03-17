@@ -13,7 +13,7 @@ def index():
 @app.route('/admin-panel')
 def admin_panel():
     # Fetch admin_panel.html content from URL
-    admin_panel_url = "https://foodorderadmin.onrender.com/admin_panel.html"  # Replace with actual URL
+    admin_panel_url = "https://foodorderadmin.onrender.com/admin-panel.html"  # Replace with actual URL
     response = requests.get(admin_panel_url)
 
     if response.status_code == 200:
@@ -24,7 +24,7 @@ def admin_panel():
         items_list = admin_soup.find_all('div', class_='item')
 
         # Render admin_panel.html with items list
-        return render_template('admin_panel.html', items=items_list)
+        return render_template('admin-panel.html', items=items_list)
     else:
         return "Failed to fetch admin_panel.html content. Status code: {}".format(response.status_code)
 
