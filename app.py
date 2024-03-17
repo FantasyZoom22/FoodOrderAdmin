@@ -7,10 +7,7 @@ app = Flask(__name__)
 # Route for index.html
 @app.route('/')
 def index():
-    # Read index.html
-    with open('index.html', 'r', encoding='utf-8') as index_file:
-        index_content = index_file.read()
-    return index_content
+    return render_template('index.html')
 
 # Route for admin_panel.html
 @app.route('/admin_panel')
