@@ -24,15 +24,19 @@ def admin_panel():
 def update_items():
     global items_data
     
-    data = request.form
+    # Get form data
+    item_name = request.form['itemName']
+    item_quantity = int(request.form['itemQuantity'])
+    item_image_url = request.form['itemImage']
     
-    # Update items_data based on received data
-    items_data = {}
-    for key, value in data.items():
-        item_id, item_name = key.split('-')
-        items_data[item_id] = {'name': item_name, 'quantity': int(value)}
+    # Generate a new item ID
+    new_item_id = str(len(items_data) + 1)
     
-    return redirect(url_for('index'))
+    # Create a new item entry
+    items_data[new_item_id] = {'name': item_name, 'quantity': item_quantity, 'image_url': item_image_url}
+    
+    # Redirect back to the admin panel
+    return redirect(url_for('admin-panel'))
 
 if __name__ == '__main__':
     app.run(debug=True)
