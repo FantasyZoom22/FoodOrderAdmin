@@ -81,13 +81,60 @@
       let itemPrice = $("#itemPrice").val();
       let itemImage = $("#itemImage").val();
 
+      // Create item object
+      let item = {
+        name: itemName,
+        price: itemPrice,
+        image: itemImage
+      };
+
       // Add item to the list
-      itemList.push({name: itemName, price: itemPrice, image: itemImage});
+      itemList.push(item);
+
+      // Add item to display
+      let itemHtml = `<div class="item-panel">
+                        <div class="row">
+                          <div class="col-md-4">
+                            <img src="${item.image}" alt="${item.name}">
+                          </div>
+                          <div class="col-md-4">
+                            <h3>${item.name}</h3>
+                            <p>Price: ${item.price}</p>
+                          </div>
+                          <div class="col-md-4">
+                            <button class="btn btn-danger btn-block mt-3" onclick="removeItem(${itemList.length - 1})">Remove</button>
+                          </div>
+                        </div>
+                      </div>`;
+      $("#itemList").append(itemHtml);
 
       // Reset form fields
       $("#itemName").val("");
       $("#itemPrice").val("");
       $("#itemImage").val("");
+    }
+
+    // Function to remove item from the list and UI
+    function removeItem(index) {
+      itemList.splice(index, 1);
+      $("#itemList").empty();
+      itemList.forEach((item, idx) => {
+        let itemHtml = `<div class="item-panel">
+                          <div class="row">
+                            <div class="col-md-4">
+                              <img src="${item.image}" alt="${item.name}">
+                            </div>
+                            <div class="col-md-4">
+                              <h3>${item.name}</h3>
+                              <p>Price: ${item.price}</p>
+                            </div>
+                            <div class="col-md-4">
+                              <button class="btn btn-danger btn-block mt-3" onclick="removeItem(${idx})">Remove</button>
+                            </div>
+                          </div>
+                        </div>`;
+        $("#itemList").append(itemHtml);
+      });
     }
 
     // Function to send data to the database
@@ -106,6 +153,7 @@
         success: function(response) {
           // Clear the list and display success message
           itemList = [];
+          $("#itemList").empty();
           alert("Items successfully added to the database!");
         },
         error: function(xhr, status, error) {
