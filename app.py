@@ -17,7 +17,8 @@ class Item(db.Model):
     image_url = db.Column(db.String(200), nullable=False)
 
 # Create tables based on the defined models
-db.create_all()
+with app.app_context():
+    db.create_all()
 
 @app.route('/')
 def index():
@@ -36,20 +37,21 @@ def update_items():
         data = request.get_json()
         
         # Iterate over each item in the received data
-        for item_data in data:
-            # Check if the item with the same name already exists in the database
-            existing_item = Item.query.filter_by(name=item_data['name']).first()
-            if existing_item:
-                # If the item exists, update its price and image URL
-                existing_item.price = item_data['price']
-                existing_item.image_url = item_data['image']
-            else:
-                # If the item does not exist, create a new item entry
-                new_item = Item(name=item_data['name'], price=item_data['price'], image_url=item_data['image'])
-                db.session.add(new_item)
+        with app.app_context():
+            for item_data in data:
+                # Check if the item with the same name already exists in the database
+                existing_item = Item.query.filter_by(name=item_data['name']).first()
+                if existing_item:
+                    # If the item exists, update its price and image URL
+                    existing_item.price = item_data['price']
+                    existing_item.image_url = item_data['image']
+                else:
+                    # If the item does not exist, create a new item entry
+                    new_item = Item(name=item_data['name'], price=item_data['price'], image_url=item_data['image'])
+                    db.session.add(new_item)
         
-        # Commit changes to the database
-        db.session.commit()
+            # Commit changes to the database
+            db.session.commit()
         
         return jsonify({'success': True})
     except Exception as e:
