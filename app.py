@@ -5,6 +5,7 @@ app = Flask(__name__)
 
 # Configure the database connection string
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://noureddine:yeZ1JYO0d9SqDdMyVL2BW14xSivEXm1G@dpg-cnsu8p5a73kc73b713u0-a:5432/itemsdb'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # Suppress SQLAlchemy modification tracking
 
 # Initialize SQLAlchemy
 db = SQLAlchemy(app)
@@ -16,8 +17,7 @@ class Item(db.Model):
     quantity = db.Column(db.Integer, nullable=False)
     image_url = db.Column(db.String(200), nullable=False)
 
-# Create tables based on the defined models
-db.create_all()
+# Don't call db.create_all() here. Instead, manage migrations separately.
 
 @app.route('/')
 def index():
@@ -44,7 +44,7 @@ def update_items():
     db.session.commit()
     
     # Redirect back to the admin panel
-    return redirect(url_for('admin-panel'))
+    return redirect(url_for('admin_panel'))
 
 if __name__ == '__main__':
     app.run(debug=True)
