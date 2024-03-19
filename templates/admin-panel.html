@@ -23,19 +23,19 @@
   <div class="container">
     <h2 class="mt-4">Admin Panel</h2>
     <!-- Form for adding new item -->
-    <form id="addItemForm" class="mb-4">
+    <form id="addItemForm" class="mb-4" method="POST" action="/add-item">
       <div class="form-row">
         <div class="col-md-4 mb-3">
           <label for="itemName">Item Name:</label>
-          <input type="text" class="form-control" id="itemName" required>
+          <input type="text" class="form-control" id="itemName" name="itemName" required>
         </div>
         <div class="col-md-4 mb-3">
           <label for="itemPrice">Item Price:</label>
-          <input type="number" class="form-control" id="itemPrice" required>
+          <input type="number" class="form-control" id="itemPrice" name="itemPrice" required>
         </div>
         <div class="col-md-4 mb-3">
           <label for="itemImage">Item Image URL:</label>
-          <input type="text" class="form-control" id="itemImage" required>
+          <input type="text" class="form-control" id="itemImage" name="itemImage" required>
         </div>
       </div>
       <button type="submit" class="btn btn-primary">Add Item</button>
@@ -69,8 +69,8 @@
 
   <button id="updateItemsBtn">Update Items</button>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="scripts.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="scripts.js"></script>
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
@@ -152,7 +152,7 @@
       function deleteItem(itemId) {
         const index = existingItems.findIndex(item => item.id === itemId);
         if (index !== -1) {
-          existingItems.splice(index, 1);
+                   existingItems.splice(index, 1);
           displayItems();
         }
       }
