@@ -94,3 +94,4 @@
       $("#addItemForm").submit();
     });
   });
+
