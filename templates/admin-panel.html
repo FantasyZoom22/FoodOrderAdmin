@@ -23,25 +23,24 @@
   <div class="container">
     <h2 class="mt-4">Admin Panel</h2>
     <!-- Form for adding new item -->
-   <!-- Form for adding new item -->
-<form id="addItemForm" class="mb-4" action="{{ url_for('update_items') }}" method="POST">
-  <div class="form-row">
-    <div class="col-md-4 mb-3">
-      <label for="itemName">Item Name:</label>
-      <input type="text" class="form-control" id="itemName" name="itemName" required>
-    </div>
-    <div class="col-md-4 mb-3">
-      <label for="itemPrice">Item Price:</label>
-      <input type="number" class="form-control" id="itemPrice" name="itemPrice" required>
-    </div>
-    <div class="col-md-4 mb-3">
-      <label for="itemImage">Item Image URL:</label>
-      <input type="text" class="form-control" id="itemImage" name="itemImage" required>
-    </div>
-  </div>
-  <button type="submit" class="btn btn-primary">Add Item</button>
-</form>
-
+    <form id="addItemForm" class="mb-4">
+      <div class="form-row">
+        <div class="col-md-4 mb-3">
+          <label for="itemName">Item Name:</label>
+          <input type="text" class="form-control" id="itemName" required>
+        </div>
+        <div class="col-md-4 mb-3">
+          <label for="itemPrice">Item Price:</label>
+          <input type="number" class="form-control" id="itemPrice" required>
+        </div>
+        <div class="col-md-4 mb-3">
+          <label for="itemImage">Item Image URL:</label>
+          <input type="text" class="form-control" id="itemImage" required>
+        </div>
+      </div>
+      <button type="button" class="btn btn-primary" onclick="addItemToList()">Add Item</button>
+      <button type="button" class="btn btn-success" onclick="sendDataToDatabase()">Update</button>
+    </form>
 
     <!-- Display existing items with delete buttons -->
     <div id="itemList">
@@ -70,12 +69,51 @@
     </div>
   </div>
 
-  <!-- Update Button -->
-  <button type="submit" class="btn btn-success" onclick="document.getElementById('addItemForm').submit()">Update</button>
-
   <!-- Scripts -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script>
+    // Array to store items before sending to the database
+    let itemList = [];
+
+    // Function to add item to the list
+    function addItemToList() {
+      let itemName = $("#itemName").val();
+      let itemPrice = $("#itemPrice").val();
+      let itemImage = $("#itemImage").val();
+
+      // Add item to the list
+      itemList.push({name: itemName, price: itemPrice, image: itemImage});
+
+      // Reset form fields
+      $("#itemName").val("");
+      $("#itemPrice").val("");
+      $("#itemImage").val("");
+    }
+
+    // Function to send data to the database
+    function sendDataToDatabase() {
+      if (itemList.length === 0) {
+        alert("Please add at least one item to the list.");
+        return;
+      }
+
+      // Send data to the server using AJAX
+      $.ajax({
+        type: "POST",
+        url: "/update-items",
+        contentType: "application/json",
+        data: JSON.stringify(itemList),
+        success: function(response) {
+          // Clear the list and display success message
+          itemList = [];
+          alert("Items successfully added to the database!");
+        },
+        error: function(xhr, status, error) {
+          // Handle errors
+          alert("Error adding items to the database: " + error);
+        }
+      });
+    }
+  </script>
 </body>
 </html>
