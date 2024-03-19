@@ -33,18 +33,16 @@ def admin_panel():
 def update_items():
     # Get form data
     item_name = request.form['itemName']
-    item_quantity = int(request.form['itemQuantity'])
+    item_price = float(request.form['itemPrice'])  # Convert price to float
     item_image_url = request.form['itemImage']
     
     # Create a new Item instance
-    new_item = Item(name=item_name, quantity=item_quantity, image_url=item_image_url)
+    new_item = Item(name=item_name, price=item_price, image_url=item_image_url)
     
     # Add the new item to the database session
     db.session.add(new_item)
     db.session.commit()
     
     # Redirect back to the admin panel
-    return redirect(url_for('admin_panel'))
+    return redirect(url_for('admin-panel'))
 
-if __name__ == '__main__':
-    app.run(debug=True)
