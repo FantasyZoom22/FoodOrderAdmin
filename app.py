@@ -1,44 +1,35 @@
-from flask import Flask, render_template, request, redirect, url_for
-import psycopg2
+ from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
-# Connect to your PostgreSQL database
-conn = psycopg2.connect(
-    dbname="itemsdb",
-    user="noureddine",
-    password="yeZ1JYO0d9SqDdMyVL2BW14xSivEXm1G",
-    host="dpg-cnsu8p5a73kc73b713u0-a"
-)
-cur = conn.cursor()
+# Global variable to store item data
+items_data = {}
 
-# Route to display items on index.html
+# Route for index.html
 @app.route('/')
 def index():
-    # Fetch items from the database
-    cur.execute("SELECT * FROM items")
-    items = cur.fetchall()
-    return render_template('index.html', items=items)
+    return render_template('index.html', items=items_data)
 
-# Route to display admin panel
+# Route for admin-panel.html
 @app.route('/admin-panel')
 def admin_panel():
     return render_template('admin-panel.html')
 
-# Route to handle form submission from admin-panel.html
-@app.route('/add-item', methods=['POST'])
-def add_item():
-    if request.method == 'POST':
-        # Get form data
-        name = request.form['itemName']
-        price = request.form['itemPrice']
-        image_url = request.form['itemImage']
-        
-        # Insert data into the database
-        cur.execute("INSERT INTO items (name, price, image_url) VALUES (%s, %s, %s)", (name, price, image_url))
-        conn.commit()
-        
-    # Redirect to the index route after adding item
+# Route to handle adding or removing items
+@app.route('/update-items', methods=['POST'])
+def update_items():
+    global items_data
+    
+    # Get the data from the POST request
+    data = request.form
+    
+    # Update the items_data dictionary based on the received data
+    items_data = {}
+    for key, value in data.items():
+        item_id, item_name = key.split('-')
+        items_data[item_id] = {'name': item_name, 'quantity': int(value)}
+    
+    # Redirect back to the index route after updating items_data
     return redirect(url_for('index'))
 
 if __name__ == '__main__':
