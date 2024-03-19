@@ -16,6 +16,9 @@ class Item(db.Model):
     quantity = db.Column(db.Integer, nullable=False)
     image_url = db.Column(db.String(200), nullable=False)
 
+# Create tables based on the defined models
+db.create_all()
+
 @app.route('/')
 def index():
     # Fetch items from the database
