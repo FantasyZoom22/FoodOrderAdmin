@@ -12,7 +12,7 @@ db = SQLAlchemy(app)
 # Define the Item model
 class Item(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(100), nullable=False)
+    name = db.Column(db.String(100), nullable=False)
     price = db.Column(db.Integer, nullable=False)
     image_url = db.Column(db.String(200), nullable=False)
 
