@@ -105,7 +105,7 @@ def add_item():
     db.session.commit()
     
     # Redirect back to the admin panel
-    return redirect(url_for('admin_panel'))
+    return redirect(url_for('admin-panel'))
 
 @app.route('/update-item/<int:item_id>', methods=['POST'])
 def update_item(item_id):
