@@ -120,7 +120,7 @@ def update_item(item_id):
         db.session.commit()
     
     # Redirect back to the admin panel
-    return redirect(url_for('admin_panel'))
+    return redirect(url_for('admin-panel'))
 
 if __name__ == '__main__':
     app.run(debug=True)
