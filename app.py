@@ -105,7 +105,7 @@ def add_item():
     db.session.commit()
     
     # Redirect back to the admin panel
-    return redirect(url_for('admin-panel'))
+    return redirect(url_for('admin_panel'))
 
 @app.route('/update-item/<int:item_id>', methods=['POST'])
 def update_item(item_id):
@@ -120,7 +120,7 @@ def update_item(item_id):
         db.session.commit()
     
     # Redirect back to the admin panel
-    return redirect(url_for('admin-panel'))
+    return redirect(url_for('admin_panel'))
 
 if __name__ == '__main__':
     app.run(debug=True)
