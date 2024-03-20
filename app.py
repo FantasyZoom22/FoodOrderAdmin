@@ -12,7 +12,7 @@ db = SQLAlchemy(app)
 # Define the Item model
 class Item(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
+    title = db.Column(db.String(100), nullable=False)
     price = db.Column(db.Integer, nullable=False)
     image_url = db.Column(db.String(200), nullable=False)
 
@@ -40,14 +40,14 @@ def update_items():
         with app.app_context():
             for item_data in data:
                 # Check if the item with the same name already exists in the database
-                existing_item = Item.query.filter_by(name=item_data['name']).first()
+                existing_item = Item.query.filter_by(title=item_data['title']).first()
                 if existing_item:
                     # If the item exists, update its price and image URL
                     existing_item.price = item_data['price']
                     existing_item.image_url = item_data['image']
                 else:
                     # If the item does not exist, create a new item entry
-                    new_item = Item(name=item_data['name'], price=item_data['price'], image_url=item_data['image'])
+                    new_item = Item(title=item_data['title'], price=item_data['price'], image_url=item_data['image'])
                     db.session.add(new_item)
         
             # Commit changes to the database
