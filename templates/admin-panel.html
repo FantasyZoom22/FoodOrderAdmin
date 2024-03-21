@@ -184,36 +184,41 @@
     }
 
     // Function to send data to the database
-    function sendDataToDatabase() {
-      // Prepare data for sending to the server
-      let itemsData = [];
-      $(".item-panel").each(function() {
-        let item = {
-          id: $(this).find("button.btn-info").attr("onclick").match(/\d+/)[0],
-          title: $(this).find("h3").text(),
-          price: $(this).find("p").text().match(/\d+/)[0],
-          image_url: $(this).find("img").attr("src")
-        };
-        itemsData.push(item);
-      });
+function sendDataToDatabase() {
+  // Prepare data for sending to the server
+  let itemsData = [];
+  $(".item-panel").each(function() {
+    let itemId = $(this).find("button.btn-info").attr("onclick").match(/\d+/)[0];
+    let itemTitle = $(this).find("h3").text();
+    let itemPrice = $(this).find("p").text().match(/\d+/)[0];
+    let itemImageUrl = $(this).find("img").attr("src");
+    let item = {
+      id: itemId,
+      title: itemTitle,
+      price: itemPrice,
+      image_url: itemImageUrl
+    };
+    itemsData.push(item);
+  });
 
-      // Send data to the server using AJAX
-      $.ajax({
-        type: "POST",
-        url: "/update-items",
-        contentType: "application/json",
-        data: JSON.stringify(itemsData),
-        success: function(response) {
-          // Clear the list and display success message
-          $("#itemList").empty();
-          alert("Items successfully updated in the database!");
-        },
-        error: function(xhr, status, error) {
-          // Handle errors
-          alert("Error updating items in the database: " + error);
-        }
-      });
+  // Send data to the server using AJAX
+  $.ajax({
+    type: "POST",
+    url: "/update-items",
+    contentType: "application/json",
+    data: JSON.stringify(itemsData),
+    success: function(response) {
+      // Clear the list and display success message
+      $("#itemList").empty();
+      alert("Items successfully updated in the database!");
+    },
+    error: function(xhr, status, error) {
+      // Handle errors
+      alert("Error updating items in the database: " + error);
     }
+  });
+}
+
   </script>
 </body>
 </html>
