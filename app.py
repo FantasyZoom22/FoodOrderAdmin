@@ -26,9 +26,15 @@ def index():
     items = Item.query.all()
     return render_template('index.html', items=items)
 
+# @app.route('/admin-panel')
+# def admin_panel():
+#     return render_template('admin-panel.html')
+
 @app.route('/admin-panel')
 def admin_panel():
-    return render_template('admin-panel.html')
+    # Fetch items from the database
+    items = Item.query.all()
+    return render_template('admin-panel.html', items=items)
 
 @app.route('/update-items', methods=['POST'])
 def update_items():
@@ -56,6 +62,46 @@ def update_items():
         return jsonify({'success': True})
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)})
+
+
+@app.route('/remove-item', methods=['POST'])
+def remove_item():
+    try:
+        data = request.get_json()
+        item_id = data.get('id')
+        # Find the item by ID
+        item = Item.query.get(item_id)
+        if item:
+            db.session.delete(item)
+            db.session.commit()
+            # Fetch items after removal
+            items = Item.query.all()
+            return jsonify({'success': True, 'items': [item.serialize() for item in items]})
+        else:
+            return jsonify({'success': False, 'error': 'Item not found'})
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)})
+
+
+@app.route('/update-item-price', methods=['POST'])
+def update_item_price():
+    try:
+        data = request.get_json()
+        item_id = data.get('id')
+        new_price = data.get('price')
+        # Find the item by ID
+        item = Item.query.get(item_id)
+        if item:
+            item.price = new_price
+            db.session.commit()
+            # Fetch items after update
+            items = Item.query.all()
+            return jsonify({'success': True, 'items': [item.serialize() for item in items]})
+        else:
+            return jsonify({'success': False, 'error': 'Item not found'})
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)})
+
 
 if __name__ == '__main__':
     app.run(debug=True)
