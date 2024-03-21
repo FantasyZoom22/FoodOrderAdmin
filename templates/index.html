@@ -163,7 +163,7 @@ body {
 <body>
   <div class="container">
     <div class="inner">
-    {% for item_id, item_info in items.items() %}
+<!--     {% for item_id, item_info in items.items() %}
     <div class="item">
         <div class="item-title">{{ item_info.name }}</div>
         <span class="item-price" id="item-price{{ item_id }}">Price: {{ item_info.quantity }} دج</span>
@@ -171,6 +171,16 @@ body {
         <button class="btn" id="btn{{ item_id }}">Add</button>
         <button class="btn remove-btn" id="removeBtn{{ item_id }}">-</button>
         <span class="notification" id="notification{{ item_id }}"></span>
+    </div>
+    {% endfor %} -->
+        {% for item in items %}
+    <div class="item">
+        <div class="item-title">{{ item.title }}</div>
+        <span class="item-price" id="item-price{{ item.id }}">Price: {{ item.price }} دج</span>
+        <img src="{{ item.image_url }}" alt="" class="img">
+        <button class="btn" id="btn{{ item.id }}">Add</button>
+        <button class="btn remove-btn" id="removeBtn{{ item.id }}">-</button>
+        <span class="notification" id="notification{{ item.id }}"></span>
     </div>
     {% endfor %}
 </div>
