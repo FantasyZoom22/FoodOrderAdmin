@@ -83,7 +83,7 @@
 
       // Create item object
       let item = {
-        name: itemName,
+        title: itemName,
         price: itemPrice,
         image: itemImage
       };
@@ -95,7 +95,7 @@
       let itemHtml = `<div class="item-panel">
                         <div class="row">
                           <div class="col-md-4">
-                            <img src="${item.image}" alt="${item.name}">
+                            <img src="${item.image}" alt="${item.title}">
                           </div>
                           <div class="col-md-4">
                             <h3>${item.name}</h3>
@@ -123,10 +123,10 @@
         let itemHtml = `<div class="item-panel">
                           <div class="row">
                             <div class="col-md-4">
-                              <img src="${item.image}" alt="${item.name}">
+                              <img src="${item.image}" alt="${item.title}">
                             </div>
                             <div class="col-md-4">
-                              <h3>${item.name}</h3>
+                              <h3>${item.title}</h3>
                               <p>Price: ${item.price}</p>
                             </div>
                             <div class="col-md-4">
@@ -149,7 +149,7 @@
           let itemHtml = `<div class="item-panel">
                             <div class="row">
                               <div class="col-md-4">
-                                <img src="${item.image}" alt="${item.name}">
+                                <img src="${item.image}" alt="${item.title}">
                               </div>
                               <div class="col-md-4">
                                 <h3>${item.name}</h3>
