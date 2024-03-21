@@ -22,25 +22,45 @@
 <body>
   <div class="container">
     <h2 class="mt-4">Admin Panel</h2>
+    <!-- Form for adding new item -->
+    <form id="addItemForm" class="mb-4">
+      <div class="form-row">
+        <div class="col-md-4 mb-3">
+          <label for="itemName">Item Name:</label>
+          <input type="text" class="form-control" id="itemName" required>
+        </div>
+        <div class="col-md-4 mb-3">
+          <label for="itemPrice">Item Price:</label>
+          <input type="number" class="form-control" id="itemPrice" required>
+        </div>
+        <div class="col-md-4 mb-3">
+          <label for="itemImage">Item Image URL:</label>
+          <input type="text" class="form-control" id="itemImage" required>
+        </div>
+      </div>
+      <button type="button" class="btn btn-primary" onclick="addItemToList()">Add Item</button>
+      <button type="button" class="btn btn-success" onclick="sendDataToDatabase()">Update</button>
+    </form>
+
     <!-- Display existing items with delete and update buttons -->
     <div id="itemList">
       <!-- Items will be dynamically populated here -->
       {% for item in items %}
-        <div class="item-panel">
-          <div class="row">
-            <div class="col-md-4">
-              <img src="{{ item.image_url }}" alt="{{ item.title }}">
-            </div>
-            <div class="col-md-4">
-              <h3>{{ item.title }}</h3>
-              <p>Price: {{ item.price }}</p>
-            </div>
-            <div class="col-md-4">
-              <button class="btn btn-info btn-block mt-3" onclick="updateItemPrice('{{ item.id }}')">Update Price</button>
-              <button class="btn btn-danger btn-block mt-3" onclick="removeItem('{{ item.id }}')">Remove</button>
-            </div>
+      <div class="item-panel">
+        <div class="row">
+          <div class="col-md-4">
+            <img src="{{ item.image_url }}" alt="{{ item.title }}">
+          </div>
+          <div class="col-md-4">
+            <h3>{{ item.title }}</h3>
+            <p>Price: {{ item.price }}</p>
+          </div>
+          <div class="col-md-4">
+            <button class="btn btn-info btn-block mt-3" onclick="updateItemPrice('{{ item.id }}')">Update Price</button>
+            <button class="btn btn-danger btn-block mt-3" onclick="removeItem('{{ item.id }}')">Remove</button>
           </div>
         </div>
+      </div>
       {% endfor %}
     </div>
   </div>
@@ -69,6 +89,28 @@
   <!-- Scripts -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script>
+    // Function to add item to the list
+    function addItemToList() {
+      let itemName = $("#itemName").val();
+      let itemPrice = $("#itemPrice").val();
+      let itemImage = $("#itemImage").val();
+
+      // Create item object
+      let item = {
+        title: itemName,
+        price: itemPrice,
+        image_url: itemImage
+      };
+
+      // Add item to display
+      addItemToUI(item);
+
+      // Reset form fields
+      $("#itemName").val("");
+      $("#itemPrice").val("");
+      $("#itemImage").val("");
+    }
+
     // Function to remove item from the list and database
     function removeItem(itemId) {
       // Send request to server to remove item
@@ -137,7 +179,40 @@
                           </div>
                         </div>
                       </div>`;
+  
       $("#itemList").append(itemHtml);
+    }
+
+    // Function to send data to the database
+    function sendDataToDatabase() {
+      // Prepare data for sending to the server
+      let itemsData = [];
+      $(".item-panel").each(function() {
+        let item = {
+          id: $(this).find("button.btn-info").attr("onclick").match(/\d+/)[0],
+          title: $(this).find("h3").text(),
+          price: $(this).find("p").text().match(/\d+/)[0],
+          image_url: $(this).find("img").attr("src")
+        };
+        itemsData.push(item);
+      });
+
+      // Send data to the server using AJAX
+      $.ajax({
+        type: "POST",
+        url: "/update-items",
+        contentType: "application/json",
+        data: JSON.stringify(itemsData),
+        success: function(response) {
+          // Clear the list and display success message
+          $("#itemList").empty();
+          alert("Items successfully updated in the database!");
+        },
+        error: function(xhr, status, error) {
+          // Handle errors
+          alert("Error updating items in the database: " + error);
+        }
+      });
     }
   </script>
 </body>
