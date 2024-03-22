@@ -294,56 +294,262 @@ function calculateTotalPrices() {
       let notification = document.getElementById(`notification${itemId}`); // Get the notification span for the corresponding item
       notification.innerText = quantities[itemId]; // Display the new quantity value in the notification
     }
-let foods = {};
+let foods = {}; 
+    
+btn1.addEventListener("click", function(){
+  quantities[1]++; // Increase the quantity for item 1
+  updatePrice(1); // Increase the price for item 1
+  updateNotification(1); // Update the notification with the new quantity
 
-// Add event listeners to all buttons with class "btn"
-document.querySelectorAll('.btn').forEach(btn => {
-    btn.addEventListener('click', function() {
-        const itemId = parseInt(this.dataset.itemId); // Get the item ID from data attribute
-        quantities[itemId]++; // Increase the quantity for the clicked item
-        updateNotification(itemId); // Update the notification with the new quantity
-        updatePrice(itemId); // Increase the price for the clicked item
+  foods[1] = {
+    title: "Tako",
+    quantity: quantities[1],
+    price: itemPrices[1]
+  };
 
-        foods[itemId] = {
-            title: this.dataset.title, // Get the item title from data attribute
-            quantity: quantities[itemId],
-            price: itemPrices[itemId]
-        };
+  if (tg.MainButton.isVisible) {
+    tg.MainButton.show();
+ 
+  }
+  else {
+    tg.MainButton.setText(`?????: ${quantities[1]}`);
+    item = "1";
+    tg.MainButton.show();
+  }
 
-        if (tg.MainButton.isVisible) {
-            tg.MainButton.show();
-        } else {
-            tg.MainButton.setText(`?????: ${quantities[itemId]}`);
-            item = itemId.toString();
-            tg.MainButton.show();
-        }
-
-        if (quantities[itemId] >= 0) {
-            document.getElementById(`removeBtn${itemId}`).style.display = "inline-block"; // Show the "Remove" button when the quantity is greater than 0
-            document.getElementById(`notification${itemId}`).style.display = "inline"; // Show the notification when the quantity is greater than 0
-        }
-        playAddSound();
-        calculateTotalPrices();
-    });
+     if (quantities[1] >= 0) {
+    removeBtn1.style.display = "inline-block"; // Show the "Remove" button when the quantity is greater than 0
+     notification1.style.display = "inline"; // Show the notification when the quantity is greater than 0
+  }
+  playAddSound();
+  calculateTotalPrices();
 });
 
-// Add event listeners to all remove buttons with class "removeBtn"
-document.querySelectorAll('.removeBtn').forEach(removeBtn => {
-    removeBtn.addEventListener('click', function() {
-        const itemId = parseInt(this.dataset.itemId); // Get the item ID from data attribute
-        if (quantities[itemId] > 0) {
-            quantities[itemId]--; // Decrease the quantity for the clicked item
-            updatePrice(itemId); // Update the displayed price for the clicked item
-            updateNotification(itemId); // Update the notification with the new quantity
-        }
+btn2.addEventListener("click", function(){
+  quantities[2]++; // Increase the quantity for item 2
+  updateNotification(2); // Update the notification with the new quantity
+  updatePrice(2); // Increase the price for item 1
 
-        if (quantities[itemId] === 0) {
-            this.style.display = "none"; // Hide the "Remove" button when the quantity is equal to 0
-            document.getElementById(`notification${itemId}`).style.display = "none"; // Hide the notification when the quantity is equal to 0
-        }
-        playRemoveSound();
-        calculateTotalPrices();
-    });
+  foods[2] = {
+    title: "Hotdog",
+    quantity: quantities[2],
+    price: itemPrices[2]
+  };
+
+  if (tg.MainButton.isVisible) {
+    tg.MainButton.show();
+  
+  }
+  else {
+    tg.MainButton.setText(`?????: ${quantities[2]}`);
+    item = "2";
+    tg.MainButton.show();
+  }
+     if (quantities[2] >= 0) {
+    removeBtn2.style.display = "inline-block"; // Show the "Remove" button when the quantity is greater than 0
+    notification2.style.display = "inline"; // Show the notification when the quantity is greater than 0
+  }
+  playAddSound();
+  calculateTotalPrices();
+});
+
+
+btn3.addEventListener("click", function(){
+  quantities[3]++; // Increase the quantity for item 1
+  updateNotification(3); // Update the notification with the new quantity
+  updatePrice(3); // Increase the price for item 1
+
+  foods[3] = {
+    title: "Burger",
+    quantity: quantities[3],
+    price: itemPrices[3]
+  };
+
+  if (tg.MainButton.isVisible) {
+    tg.MainButton.show();
+  }
+  else {
+    tg.MainButton.setText(`?????: ${quantities[3]}`);
+    item = "3";
+    tg.MainButton.show();
+  }
+     if (quantities[3] >= 0) {
+    removeBtn3.style.display = "inline-block"; // Show the "Remove" button when the quantity is greater than 0
+    notification3.style.display = "inline"; // Show the notification when the quantity is greater than 0
+  }
+  playAddSound();
+  calculateTotalPrices();
+});
+
+btn4.addEventListener("click", function(){
+  quantities[4]++; // Increase the quantity for item 2
+  updateNotification(4); // Update the notification with the new quantity
+  updatePrice(4); // Increase the price for item 1
+
+  foods[4] = {
+    title: "Fries",
+    quantity: quantities[4],
+    price: itemPrices[4]
+  };
+
+  if (tg.MainButton.isVisible) {
+    tg.MainButton.show();
+  }
+  else {
+    tg.MainButton.setText(`?????: ${quantities[4]}`);
+    item = "4";
+    tg.MainButton.show();
+  }
+   if (quantities[4] >= 0) {
+    removeBtn4.style.display = "inline-block"; // Show the "Remove" button when the quantity is greater than 0
+    notification4.style.display = "inline"; // Show the notification when the quantity is greater than 0
+  }
+  playAddSound();
+  calculateTotalPrices();
+});
+
+btn5.addEventListener("click", function(){
+  quantities[5]++; // Increase the quantity for item 1
+  updateNotification(5); // Update the notification with the new quantity
+  updatePrice(5); // Increase the price for item 1
+
+  foods[5] = {
+    title: "Pizza",
+    quantity: quantities[5],
+    price: itemPrices[5]
+  };
+
+  if (tg.MainButton.isVisible) {
+    tg.MainButton.show();
+  }
+  else {
+    //tg.MainButton.setText(`?????: ${quantities[5]}`);
+    item = "5";
+    tg.MainButton.show();
+  }
+     if (quantities[5] >= 0) {
+    removeBtn5.style.display = "inline-block"; // Show the "Remove" button when the quantity is greater than 0
+    notification5.style.display = "inline"; // Show the notification when the quantity is greater than 0
+  }
+  playAddSound();
+  calculateTotalPrices();
+});
+
+btn6.addEventListener("click", function(){
+  quantities[6]++; // Increase the quantity for item 2
+  updateNotification(6); // Update the notification with the new quantity
+  updatePrice(6); // Increase the price for item 1
+
+foods[6] = {
+    title: "Coke",
+    quantity: quantities[6],
+    price: itemPrices[6]
+  };
+    
+  if (tg.MainButton.isVisible) {
+    tg.MainButton.show();
+  }
+  else {
+    //tg.MainButton.setText(`?????: ${quantities[6]}`);
+    item = "6";
+    tg.MainButton.show();
+  }
+       if (quantities[6] >= 0) {
+    removeBtn6.style.display = "inline-block"; // Show the "Remove" button when the quantity is greater than 0
+    notification6.style.display = "inline"; // Show the notification when the quantity is greater than 0
+  }
+  playAddSound();
+  calculateTotalPrices();
+});
+// Repeat the same for other items
+
+removeBtn1.addEventListener("click", function(){
+  if (quantities[1] > 0) {
+    quantities[1]--; // Decrease the quantity for item 1
+     updatePrice(1); // Update the displayed price for item 1
+     updateNotification(1); // Update the notification with the new quantity
+  }
+
+  if (quantities[1] === 0) {
+    removeBtn1.style.display = "none"; // Hide the "Remove" button when the quantity is equal to 0
+    notification1.style.display = "none"; // Hide the notification when the quantity is equal to 0
+  }
+  playRemoveSound();
+  calculateTotalPrices();
+});
+
+removeBtn2.addEventListener("click", function(){
+  if (quantities[2] > 0) {
+    quantities[2]--; // Decrease the quantity for item 1
+    updateNotification(2); // Update the notification with the new quantity
+    updatePrice(2); // Increase the price for item 1
+  }
+
+  if (quantities[2] === 0) {
+    removeBtn2.style.display = "none"; // Hide the "Remove" button when the quantity is equal to 0
+     notification2.style.display = "none"; // Hide the notification when the quantity is equal to 0
+  }
+  playRemoveSound();
+  calculateTotalPrices();
+});
+removeBtn3.addEventListener("click", function(){
+  if (quantities[3] > 0) {
+    quantities[3]--; // Decrease the quantity for item 1
+    updateNotification(3); // Update the notification with the new quantity
+    updatePrice(3); // Increase the price for item 1
+  }
+
+  if (quantities[3] === 0) {
+    removeBtn3.style.display = "none"; // Hide the "Remove" button when the quantity is equal to 0
+     notification3.style.display = "none"; // Hide the notification when the quantity is equal to 0
+  }
+  playRemoveSound();
+  calculateTotalPrices();
+});
+
+removeBtn4.addEventListener("click", function(){
+  if (quantities[4] > 0) {
+    quantities[4]--; // Decrease the quantity for item 1
+    updateNotification(4); // Update the notification with the new quantity
+    updatePrice(4); // Increase the price for item 1
+  }
+
+  if (quantities[4] === 0) {
+    removeBtn4.style.display = "none"; // Hide the "Remove" button when the quantity is equal to 0
+     notification4.style.display = "none"; // Hide the notification when the quantity is equal to 0
+  }
+  playRemoveSound();
+  calculateTotalPrices();
+});
+
+removeBtn5.addEventListener("click", function(){
+  if (quantities[5] > 0) {
+    quantities[5]--; // Decrease the quantity for item 1
+    updateNotification(5); // Update the notification with the new quantity
+     updatePrice(5); // Increase the price for item 1
+  }
+
+  if (quantities[5] === 0) {
+    removeBtn5.style.display = "none"; // Hide the "Remove" button when the quantity is equal to 0
+     notification5.style.display = "none"; // Hide the notification when the quantity is equal to 0
+  }
+  playRemoveSound();
+  calculateTotalPrices();
+});
+
+removeBtn6.addEventListener("click", function(){
+  if (quantities[6] > 0) {
+    quantities[6]--; // Decrease the quantity for item 1
+    updateNotification(6); // Update the notification with the new quantity
+     updatePrice(6); // Increase the price for item 1
+  }
+
+  if (quantities[6] === 0) {
+    removeBtn6.style.display = "none"; // Hide the "Remove" button when the quantity is equal to 0
+     notification6.style.display = "none"; // Hide the notification when the quantity is equal to 0
+  }
+  playRemoveSound();
+  calculateTotalPrices();
 });
 
 
