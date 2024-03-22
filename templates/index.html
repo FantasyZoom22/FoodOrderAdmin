@@ -218,22 +218,82 @@ tg.expand();
 tg.MainButton.textColor = '#FFFFFF';
 tg.MainButton.color = '#2cab37';
 
-let itemPrices = {
-  {% for item_id, item_info in items.items() %}
-  {{ item_id }}: {{ item_info.price }},
-  {% endfor %}
-};
+ let itemPrices = {
+      1: 150,
+      2: 120,
+      3: 200,
+      4: 250,
+      5: 300,
+      6: 50,
+      // Add more entries for other items with their respective prices
+    };
+    
 
+let item = "";
 let quantities = {}; // Object to store quantities for each item
-let foods = {}; // Object to store information about selected items
 
+let btn1 = document.getElementById("btn1");
+let btn2 = document.getElementById("btn2");
+let btn3 = document.getElementById("btn3");
+let btn4 = document.getElementById("btn4");
+let btn5 = document.getElementById("btn5");
+let btn6 = document.getElementById("btn6");
+let removeBtn1 = document.getElementById("removeBtn1");
+let removeBtn2 = document.getElementById("removeBtn2");
+let removeBtn3 = document.getElementById("removeBtn3");
+let removeBtn4 = document.getElementById("removeBtn4");
+let removeBtn5 = document.getElementById("removeBtn5");
+let removeBtn6 = document.getElementById("removeBtn6");
 // Initialize quantities to 0 for all items
 quantities = {
-  {% for item_id, item_info in items.items() %}
-  {{ item_id }}: 0,
-  {% endfor %}
+  1: 0,
+  2: 0,
+  3: 0,
+  4: 0,
+  5: 0,
+  6: 0,
+
+  // Add more entries for other items
 };
 
+// Add this at the end of your existing JavaScript code
+
+function calculateTotalPrices() {
+  let totalPrice = 0;
+  
+  for (let itemId in quantities) {
+    totalPrice += itemPrices[itemId] * quantities[itemId];
+  }
+  
+  let totalElement = document.getElementById("total-price");
+  totalElement.innerText = totalPrice;
+  
+  // Hide the total container if the total price is zero
+  let totalContainer = document.querySelector(".total-container");
+  if (totalPrice === 0) {
+    totalContainer.style.display = "none";
+  } else {
+    totalContainer.style.display = "block";
+  }
+}
+
+
+  function updatePrice(itemId) {
+    let itemPriceElement = document.getElementById(`item-price${itemId}`);
+    let totalItemPrice = itemPrices[itemId] * quantities[itemId]; // Calculate the total price for the item
+
+    if (quantities[itemId] === 0) {
+      // Revert to the original price when quantity is zero
+      itemPriceElement.innerText = `Price: ??${itemPrices[itemId]}`;
+    } else {
+      itemPriceElement.innerText = `Price: ??${totalItemPrice}`; // Update the displayed price
+    }
+  }
+
+    function updateNotification(itemId) {
+      let notification = document.getElementById(`notification${itemId}`); // Get the notification span for the corresponding item
+      notification.innerText = quantities[itemId]; // Display the new quantity value in the notification
+    }
 // Update the event listeners for all buttons dynamically
 for (let i = 1; i <= Object.keys(itemPrices).length; i++) {
   document.getElementById(`btn${i}`).addEventListener("click", function(){
@@ -281,42 +341,20 @@ for (let i = 1; i <= Object.keys(itemPrices).length; i++) {
   });
 }
 
-function updatePrice(itemId) {
-  let itemPriceElement = document.getElementById(`item-price${itemId}`);
-  let totalItemPrice = itemPrices[itemId] * quantities[itemId]; // Calculate the total price for the item
 
-  if (quantities[itemId] === 0) {
-    // Revert to the original price when quantity is zero
-    itemPriceElement.innerText = `Price: دج${itemPrices[itemId]}`;
-  } else {
-    itemPriceElement.innerText = `Price: دج${totalItemPrice}`; // Update the displayed price
-  }
-}
+// Telegram.WebApp.onEvent("mainButtonClicked", function(){
+//   tg.sendData({ item: item, quantity: quantities[item] }); // Send both item and quantity data to Telegram
+// });
 
 function updateNotification(itemId) {
   let notification = document.getElementById(`notification${itemId}`); // Get the notification span for the corresponding item
   notification.innerText = quantities[itemId]; // Display the new quantity value in the notification
 }
 
-function calculateTotalPrices() {
-  let totalPrice = 0;
-  
-  for (let itemId in quantities) {
-    totalPrice += itemPrices[itemId] * quantities[itemId];
-  }
-  
-  let totalElement = document.getElementById("total-price");
-  totalElement.innerText = totalPrice;
-  
-  // Hide the total container if the total price is zero
-  let totalContainer = document.querySelector(".total-container");
-  if (totalPrice === 0) {
-    totalContainer.style.display = "none";
-  } else {
-    totalContainer.style.display = "block";
-  }
+// Initial update of all notifications when the page is loaded
+for (let itemId in quantities) {
+  updateNotification(itemId);
 }
-
 
 // Initial calculation of total prices when the page loads
 calculateTotalPrices();
@@ -331,7 +369,7 @@ p.innerText = `${tg.initDataUnsafe.user.first_name} ${tg.initDataUnsafe.user.las
 usercard.appendChild(p);
 
 
-  Telegram.WebApp.onEvent("mainButtonClicked", function(){
+Telegram.WebApp.onEvent("mainButtonClicked", function(){
   let selectedPaymentMethod = document.getElementById("paymentMethod").value;
   let addressinField = document.getElementById("usr").value;
   
@@ -357,7 +395,7 @@ usercard.appendChild(p);
 });
 
 function sendWebhookData(requestBody) {
-  let url = 'https://hookfastfood22.onrender.com/webhook'; // Replace with your server endpoint
+  let url = 'web_url/webhook'; // Replace with your server endpoint
    
   fetch(url, {
     method: 'POST',
