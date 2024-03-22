@@ -220,7 +220,7 @@ tg.MainButton.color = '#2cab37';
 
 let itemPrices = {
   {% for item_id, item_info in items.items() %}
-  {{ item_id }}: {{ item_info.price }},
+  "{{ item_id }}": {{ item_info.price }},
   {% endfor %}
 };
     
