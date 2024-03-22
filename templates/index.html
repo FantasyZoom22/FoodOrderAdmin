@@ -296,54 +296,62 @@ function calculateTotalPrices() {
     }
 let foods = {}; 
     
-// Define a function to create event listeners for the buttons
-function createEventListeners(itemId) {
-    let btn = document.getElementById(`btn${itemId}`);
-    let removeBtn = document.getElementById(`removeBtn${itemId}`);
-    
-    btn.addEventListener("click", function(){
-        quantities[itemId]++; // Increase the quantity for the item
-        updateNotification(itemId); // Update the notification with the new quantity
-        updatePrice(itemId); // Update the displayed price for the item
-        calculateTotalPrices(); // Recalculate total prices
-        
-        foods[itemId] = {
-            title: "Item " + itemId, // You can fetch the title from the database if needed
-            quantity: quantities[itemId],
-            price: itemPrices[itemId]
-        };
-        
-        // Show the "Remove" button and notification when the quantity is greater than 0
-        if (quantities[itemId] >= 0) {
-            removeBtn.style.display = "inline-block";
-            document.getElementById(`notification${itemId}`).style.display = "inline";
-        }
-        
-        playAddSound();
-    });
+// Define an array to store references to the buttons and remove buttons
+let itemButtons = [];
+let removeButtons = [];
 
-    removeBtn.addEventListener("click", function(){
-        if (quantities[itemId] > 0) {
-            quantities[itemId]--; // Decrease the quantity for the item
-            updateNotification(itemId); // Update the notification with the new quantity
-            updatePrice(itemId); // Update the displayed price for the item
-            calculateTotalPrices(); // Recalculate total prices
-        }
+// Loop through the items to add event listeners for each item button and remove button
+for (let i = 0; i < items.length; i++) {
+  let itemId = items[i].id;
+  let addButton = document.getElementById(`btn${itemId}`);
+  let removeButton = document.getElementById(`removeBtn${itemId}`);
 
-        // Hide the "Remove" button and notification when the quantity is equal to 0
-        if (quantities[itemId] === 0) {
-            removeBtn.style.display = "none";
-            document.getElementById(`notification${itemId}`).style.display = "none";
-        }
+  itemButtons.push(addButton);
+  removeButtons.push(removeButton);
 
-        playRemoveSound();
-    });
+  addButton.addEventListener("click", function() {
+    quantities[itemId]++; // Increase the quantity for the clicked item
+    updateNotification(itemId); // Update the notification with the new quantity
+    updatePrice(itemId); // Update the displayed price for the clicked item
+
+    foods[itemId] = {
+      title: items[i].title,
+      quantity: quantities[itemId],
+      price: itemPrices[itemId]
+    };
+
+    if (tg.MainButton.isVisible) {
+      tg.MainButton.show();
+    } else {
+      tg.MainButton.setText(`?????: ${quantities[itemId]}`);
+      item = itemId;
+      tg.MainButton.show();
+    }
+
+    if (quantities[itemId] >= 0) {
+      removeButton.style.display = "inline-block"; // Show the "Remove" button when the quantity is greater than 0
+      document.getElementById(`notification${itemId}`).style.display = "inline"; // Show the notification when the quantity is greater than 0
+    }
+    playAddSound();
+    calculateTotalPrices();
+  });
+
+  removeButton.addEventListener("click", function() {
+    if (quantities[itemId] > 0) {
+      quantities[itemId]--; // Decrease the quantity for the clicked item
+      updateNotification(itemId); // Update the notification with the new quantity
+      updatePrice(itemId); // Update the displayed price for the clicked item
+    }
+
+    if (quantities[itemId] === 0) {
+      removeButton.style.display = "none"; // Hide the "Remove" button when the quantity is equal to 0
+      document.getElementById(`notification${itemId}`).style.display = "none"; // Hide the notification when the quantity is equal to 0
+    }
+    playRemoveSound();
+    calculateTotalPrices();
+  });
 }
 
-// Loop through the itemPrices object to create event listeners for each item
-for (let itemId in itemPrices) {
-    createEventListeners(itemId);
-}
 
 
 // Telegram.WebApp.onEvent("mainButtonClicked", function(){
