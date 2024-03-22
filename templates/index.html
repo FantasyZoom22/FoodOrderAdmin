@@ -221,16 +221,13 @@ tg.MainButton.textColor = '#FFFFFF';
 tg.MainButton.color = '#2cab37';
 
 
-let foods = {}; 
-    
-let itemPrices = {};
-let quantities = {};
 
-// Function to calculate total prices
+
+// Add this at the end of your existing JavaScript code
+
 function calculateTotalPrices() {
   let totalPrice = 0;
   
-  // Iterate over all itemIds
   for (let itemId in quantities) {
     totalPrice += itemPrices[itemId] * quantities[itemId];
   }
@@ -247,47 +244,88 @@ function calculateTotalPrices() {
   }
 }
 
-// Function to update price for a specific item
-function updatePrice(itemId) {
-  let itemPriceElement = document.getElementById(`item-price${itemId}`);
-  let totalItemPrice = itemPrices[itemId] * quantities[itemId]; // Calculate the total price for the item
 
-  if (quantities[itemId] === 0) {
-    // Revert to the original price when quantity is zero
-    itemPriceElement.innerText = `Price: ??${itemPrices[itemId]}`;
-  } else {
-    itemPriceElement.innerText = `Price: ??${totalItemPrice}`; // Update the displayed price
+  function updatePrice(itemId) {
+    let itemPriceElement = document.getElementById(`item-price${itemId}`);
+    let totalItemPrice = itemPrices[itemId] * quantities[itemId]; // Calculate the total price for the item
+
+    if (quantities[itemId] === 0) {
+      // Revert to the original price when quantity is zero
+      itemPriceElement.innerText = `Price: ??${itemPrices[itemId]}`;
+    } else {
+      itemPriceElement.innerText = `Price: ??${totalItemPrice}`; // Update the displayed price
+    }
   }
-}
 
-// Function to update notification for a specific item
-function updateNotification(itemId) {
-  let notification = document.getElementById(`notification${itemId}`); // Get the notification span for the corresponding item
-  notification.innerText = quantities[itemId]; // Display the new quantity value in the notification
-}
+    function updateNotification(itemId) {
+      let notification = document.getElementById(`notification${itemId}`); // Get the notification span for the corresponding item
+      notification.innerText = quantities[itemId]; // Display the new quantity value in the notification
+    }
+let foods = {}; 
+    
+// Initialize itemPrices and quantities dynamically based on items from the database
+let itemPrices = {};
+let quantities = {};
 
-// Event listeners for adding items
+// Loop through the items retrieved from the database
 {% for item in items %}
-document.getElementById("btn{{ item.id }}").addEventListener("click", function() {
-  quantities[{{ item.id }}]++;
-  updatePrice({{ item.id }});
-  updateNotification({{ item.id }});
-  calculateTotalPrices();
-  // Add other relevant logic here
-});
+    itemPrices[{{ item.id }}] = {{ item.price }};
+    quantities[{{ item.id }}] = 0;
 {% endfor %}
 
-// Event listeners for removing items
-{% for item in items %}
-document.getElementById("removeBtn{{ item.id }}").addEventListener("click", function() {
-  if (quantities[{{ item.id }}] > 0) {
-    quantities[{{ item.id }}]--; // Decrease the quantity for the item
-    updatePrice({{ item.id }}); // Update the displayed price for the item
-    updateNotification({{ item.id }}); // Update the notification with the new quantity
-    calculateTotalPrices(); // Recalculate total prices
-  }
+// Dynamically configure buttons and item prices based on items from the database
+document.querySelectorAll('.btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const itemId = parseInt(this.dataset.itemId);
+        quantities[itemId]++;
+        updateNotification(itemId);
+        updatePrice(itemId);
+
+        foods[itemId] = {
+            title: this.dataset.title,
+            quantity: quantities[itemId],
+            price: itemPrices[itemId]
+        };
+
+        const removeBtn = document.getElementById(`removeBtn${itemId}`);
+        if (removeBtn) {
+            removeBtn.style.display = "inline-block";
+        }
+
+        const notification = document.getElementById(`notification${itemId}`);
+        if (notification) {
+            notification.style.display = "inline";
+        }
+
+        playAddSound();
+        calculateTotalPrices();
+    });
 });
-{% endfor %}
+
+document.querySelectorAll('.remove-btn').forEach(removeBtn => {
+    removeBtn.addEventListener('click', function() {
+        const itemId = parseInt(this.dataset.itemId);
+        if (quantities[itemId] > 0) {
+            quantities[itemId]--;
+            updatePrice(itemId);
+            updateNotification(itemId);
+        }
+
+        const removeButton = document.getElementById(`removeBtn${itemId}`);
+        if (removeButton && quantities[itemId] === 0) {
+            removeButton.style.display = "none";
+        }
+
+        const notification = document.getElementById(`notification${itemId}`);
+        if (notification && quantities[itemId] === 0) {
+            notification.style.display = "none";
+        }
+
+        playRemoveSound();
+        calculateTotalPrices();
+    });
+});
+
 
 
 
