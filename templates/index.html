@@ -293,11 +293,6 @@ function updatePrice(itemId) {
   }
 }
 
-function updateNotification(itemId) {
-  let notification = document.getElementById(`notification${itemId}`); // Get the notification span for the corresponding item
-  notification.innerText = quantities[itemId]; // Display the new quantity value in the notification
-}
-
 function calculateTotalPrices() {
   let totalPrice = 0;
   
@@ -318,12 +313,6 @@ function calculateTotalPrices() {
 }
 
 
-
-
-
-// Telegram.WebApp.onEvent("mainButtonClicked", function(){
-//   tg.sendData({ item: item, quantity: quantities[item] }); // Send both item and quantity data to Telegram
-// });
 
 function updateNotification(itemId) {
   let notification = document.getElementById(`notification${itemId}`); // Get the notification span for the corresponding item
