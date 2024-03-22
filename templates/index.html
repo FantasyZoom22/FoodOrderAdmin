@@ -200,7 +200,7 @@ body {
         </form>
   
   <div class="total-container">
-  <p>Total Price: ??<span id="total-price">0</span></p>
+  <p>Total Price: دج<span id="total-price">0</span></p>
 </div>
 
   <div class="usercard" id="usercard">
@@ -218,26 +218,41 @@ tg.expand();
 tg.MainButton.textColor = '#FFFFFF';
 tg.MainButton.color = '#2cab37';
 
-
 let itemPrices = {
   {% for item_id, item_info in items.items() %}
   {{ item_id }}: {{ item_info.price }},
   {% endfor %}
 };
+    
 
-let quantities = {}; // Object to store quantities for each item
-let foods = {}; // Object to store information about selected items
- 
 let item = "";
+let quantities = {}; // Object to store quantities for each item
 
+let btn1 = document.getElementById("btn1");
+let btn2 = document.getElementById("btn2");
+let btn3 = document.getElementById("btn3");
+let btn4 = document.getElementById("btn4");
+let btn5 = document.getElementById("btn5");
+let btn6 = document.getElementById("btn6");
+let removeBtn1 = document.getElementById("removeBtn1");
+let removeBtn2 = document.getElementById("removeBtn2");
+let removeBtn3 = document.getElementById("removeBtn3");
+let removeBtn4 = document.getElementById("removeBtn4");
+let removeBtn5 = document.getElementById("removeBtn5");
+let removeBtn6 = document.getElementById("removeBtn6");
 // Initialize quantities to 0 for all items
 quantities = {
-  {% for item_id, item_info in items.items() %}
-  {{ item_id }}: 0,
-  {% endfor %}
-};
-// Add this at the end of your existing JavaScript code
+  1: 0,
+  2: 0,
+  3: 0,
+  4: 0,
+  5: 0,
+  6: 0,
 
+  // Add more entries for other items
+};
+
+// function calculate total prices
 function calculateTotalPrices() {
   let totalPrice = 0;
   
@@ -258,7 +273,8 @@ function calculateTotalPrices() {
 }
 
 
- function updatePrice(itemId) {
+  
+function updatePrice(itemId) {
   let itemPriceElement = document.getElementById(`item-price${itemId}`);
   let totalItemPrice = itemPrices[itemId] * quantities[itemId]; // Calculate the total price for the item
 
@@ -269,11 +285,13 @@ function calculateTotalPrices() {
     itemPriceElement.innerText = `Price: دج${totalItemPrice}`; // Update the displayed price
   }
 }
-
-    function updateNotification(itemId) {
+   function updateNotification(itemId) {
   let notification = document.getElementById(`notification${itemId}`); // Get the notification span for the corresponding item
   notification.innerText = quantities[itemId]; // Display the new quantity value in the notification
 }
+  
+let foods = {}; 
+    
 // Update the event listeners for all buttons dynamically
 for (let i = 1; i <= Object.keys(itemPrices).length; i++) {
   document.getElementById(`btn${i}`).addEventListener("click", function(){
@@ -320,6 +338,8 @@ for (let i = 1; i <= Object.keys(itemPrices).length; i++) {
     calculateTotalPrices();
   });
 }
+
+
 
 
 // Telegram.WebApp.onEvent("mainButtonClicked", function(){
