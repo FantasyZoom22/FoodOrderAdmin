@@ -278,22 +278,22 @@ function calculateTotalPrices() {
 }
 
 
-  function updatePrice(itemId) {
-    let itemPriceElement = document.getElementById(`item-price${itemId}`);
-    let totalItemPrice = itemPrices[itemId] * quantities[itemId]; // Calculate the total price for the item
+ function updatePrice(itemId) {
+  let itemPriceElement = document.getElementById(`item-price${itemId}`);
+  let totalItemPrice = itemPrices[itemId] * quantities[itemId]; // Calculate the total price for the item
 
-    if (quantities[itemId] === 0) {
-      // Revert to the original price when quantity is zero
-      itemPriceElement.innerText = `Price: ??${itemPrices[itemId]}`;
-    } else {
-      itemPriceElement.innerText = `Price: ??${totalItemPrice}`; // Update the displayed price
-    }
+  if (quantities[itemId] === 0) {
+    // Revert to the original price when quantity is zero
+    itemPriceElement.innerText = `Price: دج${itemPrices[itemId]}`;
+  } else {
+    itemPriceElement.innerText = `Price: دج${totalItemPrice}`; // Update the displayed price
   }
+}
 
     function updateNotification(itemId) {
-      let notification = document.getElementById(`notification${itemId}`); // Get the notification span for the corresponding item
-      notification.innerText = quantities[itemId]; // Display the new quantity value in the notification
-    }
+  let notification = document.getElementById(`notification${itemId}`); // Get the notification span for the corresponding item
+  notification.innerText = quantities[itemId]; // Display the new quantity value in the notification
+}
 // Update the event listeners for all buttons dynamically
 for (let i = 1; i <= Object.keys(itemPrices).length; i++) {
   document.getElementById(`btn${i}`).addEventListener("click", function(){
