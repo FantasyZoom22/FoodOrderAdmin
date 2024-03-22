@@ -129,9 +129,10 @@ body {
         width: 100%; /* Make images responsive */
       }
 
-        .payment-container {
+    .payment-container {
     text-align: center;
     margin-top: 10px;
+      color: black;
   }
 
   .payment-method {
@@ -155,26 +156,65 @@ body {
   }
 
       .form-group{
-  width: 400px;
+    width: 260px;
+    margin-left: 59px;
+    margin-top: -10px;
       }
     }
 
 </style>
 <body>
   <div class="container">
-   <div class="inner">
-    {% for item in items %}
-    <div class="item">
-        <div class="item-title">{{ item.title }}</div>
-        <span class="item-price" id="item-price{{ item.id }}">Price: {{ item.price }} ??</span>
-        <img src="{{ item.image_url }}" alt="" class="img">
-        <button class="btn" id="btn{{ item.id }}">Add</button>
-        <button class="btn remove-btn" id="removeBtn{{ item.id }}">-</button>
-        <span class="notification" id="notification{{ item.id }}"></span>
+    <div class="inner">
+      <div class="item">
+        <div class="item-title">Tako</div>
+        <span class="item-price" id="item-price1">Price: 150دج</span> <!-- Updated price -->
+        <img src="https://res.cloudinary.com/dsjjtnudl/image/upload/v1692470283/TG-Foods/Tako_148_qb6ayw.png" alt="" class="img">
+        <button class="btn" id="btn1">Add</button>
+                <button class="btn remove-btn" id="removeBtn1" >-</button>
+                <span class="notification" id="notification1" ></span>
+      </div>
+      <div class="item">
+       <div class="item-title">Hotdog</div>
+      <span class="item-price" id="item-price2">Price: 120دج</span> 
+        <img src="https://res.cloudinary.com/dsjjtnudl/image/upload/v1692470281/TG-Foods/Hotdog_148_iddyls.png" alt="" class="img">
+        <button class="btn" id="btn2">Add</button>
+                <button class="btn remove-btn" id="removeBtn2" >-</button>
+                <span class="notification" id="notification2" ></span>
+      </div>
+      <div class="item">
+       <div class="item-title">Burger</div>
+      <span class="item-price" id="item-price3">Price: Price: 200دج</span> 
+        <img src="https://res.cloudinary.com/dsjjtnudl/image/upload/v1692470282/TG-Foods/Burger_148_vm6adu.png" alt="" class="img">
+        <button class="btn" id="btn3">Add</button>
+                <button class="btn remove-btn" id="removeBtn3" >-</button>
+                <span class="notification" id="notification3" ></span>
+      </div>
+      <div class="item">
+       <div class="item-title">Fries</div>
+      <span class="item-price" id="item-price4">Price: 250دج</span> 
+        <img src="https://res.cloudinary.com/dsjjtnudl/image/upload/v1692470285/TG-Foods/Fries_148_jxcly5.png" alt="" class="img">
+        <button class="btn" id="btn4">Add</button>
+                <button class="btn remove-btn" id="removeBtn4" >-</button>
+                <span class="notification" id="notification4" ></span>
+      </div>
+      <div class="item">
+        <div class="item-title">Pizza</div>
+        <span class="item-price" id="item-price5">Price: 300دج</span> 
+        <img src="https://res.cloudinary.com/dsjjtnudl/image/upload/v1692470283/TG-Foods/Pizza_148_jej5pz.png" alt="" class="img">
+        <button class="btn" id="btn5">Add</button>
+                <button class="btn remove-btn" id="removeBtn5" >-</button>
+                <span class="notification" id="notification5" ></span>
+      </div>
+      <div class="item">
+      <div class="item-title">Coke</div>
+      <span class="item-price" id="item-price6">Price: 50دج</span> 
+        <img src="https://res.cloudinary.com/dsjjtnudl/image/upload/v1692470282/TG-Foods/Coke_148_ajethz.png" alt="" class="img">
+        <button class="btn" id="btn6">Add</button>
+                <button class="btn remove-btn" id="removeBtn6" >-</button>
+                <span class="notification" id="notification6" ></span>
+      </div>
     </div>
-    {% endfor %}
-</div>
-  
   </div>
 
 
@@ -200,7 +240,7 @@ body {
         </form>
   
   <div class="total-container">
-  <p>Total Price: ??<span id="total-price">0</span></p>
+  <p>Total Price: دج<span id="total-price">0</span></p>
 </div>
 
   <div class="usercard" id="usercard">
@@ -284,9 +324,9 @@ function calculateTotalPrices() {
 
     if (quantities[itemId] === 0) {
       // Revert to the original price when quantity is zero
-      itemPriceElement.innerText = `Price: ??${itemPrices[itemId]}`;
+      itemPriceElement.innerText = `Price: دج${itemPrices[itemId]}`;
     } else {
-      itemPriceElement.innerText = `Price: ??${totalItemPrice}`; // Update the displayed price
+      itemPriceElement.innerText = `Price: دج${totalItemPrice}`; // Update the displayed price
     }
   }
 
@@ -312,7 +352,7 @@ btn1.addEventListener("click", function(){
  
   }
   else {
-    tg.MainButton.setText(`?????: ${quantities[1]}`);
+    tg.MainButton.setText(`طلبية: ${quantities[1]}`);
     item = "1";
     tg.MainButton.show();
   }
@@ -341,7 +381,7 @@ btn2.addEventListener("click", function(){
   
   }
   else {
-    tg.MainButton.setText(`?????: ${quantities[2]}`);
+    tg.MainButton.setText(`طلبية: ${quantities[2]}`);
     item = "2";
     tg.MainButton.show();
   }
@@ -369,7 +409,7 @@ btn3.addEventListener("click", function(){
     tg.MainButton.show();
   }
   else {
-    tg.MainButton.setText(`?????: ${quantities[3]}`);
+    tg.MainButton.setText(`طلبية: ${quantities[3]}`);
     item = "3";
     tg.MainButton.show();
   }
@@ -396,7 +436,7 @@ btn4.addEventListener("click", function(){
     tg.MainButton.show();
   }
   else {
-    tg.MainButton.setText(`?????: ${quantities[4]}`);
+    tg.MainButton.setText(`طلبية: ${quantities[4]}`);
     item = "4";
     tg.MainButton.show();
   }
@@ -423,7 +463,7 @@ btn5.addEventListener("click", function(){
     tg.MainButton.show();
   }
   else {
-    //tg.MainButton.setText(`?????: ${quantities[5]}`);
+    //tg.MainButton.setText(`طلبية: ${quantities[5]}`);
     item = "5";
     tg.MainButton.show();
   }
@@ -450,7 +490,7 @@ foods[6] = {
     tg.MainButton.show();
   }
   else {
-    //tg.MainButton.setText(`?????: ${quantities[6]}`);
+    //tg.MainButton.setText(`طلبية: ${quantities[6]}`);
     item = "6";
     tg.MainButton.show();
   }
@@ -608,7 +648,7 @@ Telegram.WebApp.onEvent("mainButtonClicked", function(){
 });
 
 function sendWebhookData(requestBody) {
-  let url = 'https://hookfastfood22.onrender.com/webhook'; // Replace with your server endpoint
+  let url = 'https://resto22.onrender.com/webhook'; // Replace with your server endpoint
    
   fetch(url, {
     method: 'POST',
