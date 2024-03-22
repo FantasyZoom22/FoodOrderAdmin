@@ -274,9 +274,14 @@ function calculateTotalPrices() {
   }
 
     function updateNotification(itemId) {
-      let notification = document.getElementById(`notification${itemId}`); // Get the notification span for the corresponding item
-      notification.innerText = quantities[itemId]; // Display the new quantity value in the notification
+    let notification = document.getElementById(`notification${itemId}`);
+    if (notification) {
+        notification.innerText = quantities[itemId]; // Display the new quantity value in the notification
+    } else {
+        console.error(`Notification span with ID notification${itemId} not found.`);
     }
+}
+
 
 
   
