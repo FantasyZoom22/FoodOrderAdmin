@@ -467,6 +467,37 @@ foods[6] = {
   playAddSound();
   calculateTotalPrices();
 });
+
+btn7.addEventListener("click", function(){
+  quantities[7]++; // Increase the quantity for item 1
+  updatePrice(7); // Increase the price for item 1
+  updateNotification(1); // Update the notification with the new quantity
+
+  foods[7] = {
+    title: "Panini",
+    quantity: quantities[7],
+    price: itemPrices[7]
+  };
+
+  if (tg.MainButton.isVisible) {
+    tg.MainButton.show();
+ 
+  }
+  else {
+    tg.MainButton.setText(`طلبية: ${quantities[1]}`);
+    item = "7";
+    tg.MainButton.show();
+  }
+
+     if (quantities[7] >= 0) {
+    removeBtn7.style.display = "inline-block"; // Show the "Remove" button when the quantity is greater than 0
+     notification7.style.display = "inline"; // Show the notification when the quantity is greater than 0
+  }
+  playAddSound();
+  calculateTotalPrices();
+});
+
+  
 // Repeat the same for other items
 
 removeBtn1.addEventListener("click", function(){
@@ -553,6 +584,22 @@ removeBtn6.addEventListener("click", function(){
   if (quantities[6] === 0) {
     removeBtn6.style.display = "none"; // Hide the "Remove" button when the quantity is equal to 0
      notification6.style.display = "none"; // Hide the notification when the quantity is equal to 0
+  }
+  playRemoveSound();
+  calculateTotalPrices();
+});
+
+  
+removeBtn7.addEventListener("click", function(){
+  if (quantities[7] > 0) {
+    quantities[7]--; // Decrease the quantity for item 1
+     updatePrice(1); // Update the displayed price for item 1
+     updateNotification(1); // Update the notification with the new quantity
+  }
+
+  if (quantities[7] === 0) {
+    removeBtn7.style.display = "none"; // Hide the "Remove" button when the quantity is equal to 0
+    notification7.style.display = "none"; // Hide the notification when the quantity is equal to 0
   }
   playRemoveSound();
   calculateTotalPrices();
