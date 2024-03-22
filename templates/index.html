@@ -324,13 +324,18 @@ document.querySelectorAll('.removeBtn').forEach(removeBtn => {
         }
 
         if (quantities[itemId] === 0) {
-            this.style.display = "none"; // Hide the "Remove" button when the quantity is equal to 0
-            document.getElementById(`notification${itemId}`).style.display = "none"; // Hide the notification when the quantity is equal to 0
+            // Hide the "Remove" button when the quantity is equal to 0
+            this.style.display = "none";
+            // Hide the notification when the quantity is equal to 0
+            document.getElementById(`notification${itemId}`).style.display = "none";
         }
-        playRemoveSound();
+
+        // Update total prices and play remove sound
         calculateTotalPrices();
+        playRemoveSound();
     });
 });
+
 
 
 
