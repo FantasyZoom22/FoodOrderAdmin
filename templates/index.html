@@ -211,6 +211,8 @@ body {
 <audio id="removeSound" src="https://res.cloudinary.com/dsjjtnudl/video/upload/v1709286890/SoundEffect/mag-remove-92075_i3z6o3.mp3"></audio>
   
 <script>
+
+document.addEventListener('DOMContentLoaded', function() {  
     let tg = window.Telegram.WebApp;
 
 tg.expand();
@@ -417,6 +419,8 @@ function sendWebhookData(requestBody) {
       console.error('An error occurred:', error);
     });  
 };
+
+   });
 </script>
  <script>
     // Add this JavaScript code
