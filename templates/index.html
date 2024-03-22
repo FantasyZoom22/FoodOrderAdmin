@@ -256,21 +256,10 @@ function calculateTotalPrices() {
     }
   }
 
-    function updateNotification(itemId) {
-    // Construct the ID of the notification element
-    var notificationId = 'notification' + itemId;
-    
-    // Find the notification element
-    var notificationElement = document.getElementById(notificationId);
-    
-    // Check if the notification element exists
-    if (notificationElement) {
-        // Update the inner text of the notification element
-        notificationElement.innerText = `Quantity: ${quantities[itemId]}`;
-    } else {
-        console.error(`Notification element with ID ${notificationId} not found.`);
-    }
-}
+   // function updateNotification(itemId) {
+   //    let notification = document.getElementById(`notification${itemId}`); // Get the notification span for the corresponding item
+   //    notification.innerText = quantities[itemId]; // Display the new quantity value in the notification
+   //  }
 
   
 let foods = {}; 
