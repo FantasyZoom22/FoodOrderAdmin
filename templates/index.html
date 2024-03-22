@@ -282,6 +282,37 @@ function calculateTotalPrices() {
   
 let foods = {};
 
+// Add event listeners to all buttons with class "add-btn"
+document.querySelectorAll('.add-btn').forEach(addBtn => {
+    addBtn.addEventListener('click', function() {
+        const itemId = parseInt(this.dataset.itemId); // Get the item ID from data attribute
+        quantities[itemId]++; // Increase the quantity for the clicked item
+        updateNotification(itemId); // Update the notification with the new quantity
+        updatePrice(itemId); // Increase the price for the clicked item
+
+        foods[itemId] = {
+            title: this.dataset.title, // Get the item title from data attribute
+            quantity: quantities[itemId],
+            price: itemPrices[itemId]
+        };
+
+        if (tg.MainButton.isVisible) {
+            tg.MainButton.show();
+        } else {
+            tg.MainButton.setText(`?????: ${quantities[itemId]}`);
+            item = itemId.toString();
+            tg.MainButton.show();
+        }
+
+        if (quantities[itemId] >= 0) {
+            document.getElementById(`removeBtn${itemId}`).style.display = "inline-block"; // Show the "Remove" button when the quantity is greater than 0
+            document.getElementById(`notification${itemId}`).style.display = "inline"; // Show the notification when the quantity is greater than 0
+        }
+        playAddSound();
+        calculateTotalPrices();
+    });
+});
+  
 // Add event listeners to all buttons with class "remove-btn"
 document.querySelectorAll('.remove-btn').forEach(removeBtn => {
     removeBtn.addEventListener('click', function() {
