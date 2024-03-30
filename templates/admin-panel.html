@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -22,7 +22,6 @@
 <body>
   <div class="container">
     <h2 class="mt-4">Admin Panel</h2>
-    
     <!-- Form for adding new item -->
     <form id="addItemForm" class="mb-4">
       <div class="form-row">
@@ -40,49 +39,31 @@
         </div>
       </div>
       <button type="button" class="btn btn-primary" onclick="addItemToList()">Add Item</button>
+      <button type="button" class="btn btn-success" onclick="sendDataToDatabase()">Update</button>
     </form>
 
-    <!-- Display existing items with update and remove buttons -->
+    <!-- Display existing items with delete and update buttons -->
     <div id="itemList">
-      <!-- Items fetched from the database will be dynamically populated here -->
-      {% for item in items %}
-      <div class="item-panel">
-        <div class="row">
-          <div class="col-md-4">
-            <img src="{{ item.image_url }}" alt="{{ item.title }}">
-          </div>
-          <div class="col-md-4">
-            <h3>{{ item.title }}</h3>
-            <p>Price: {{ item.price }}</p>
-          </div>
-          <div class="col-md-4">
-            <button class="btn btn-info btn-block mt-3" onclick="updateItemPrice({{ item.id }})">Update Price</button>
-            <button class="btn btn-danger btn-block mt-3" onclick="removeItem({{ item.id }})">Remove</button>
-          </div>
-        </div>
-      </div>
-      {% endfor %}
+      <!-- Items will be dynamically populated here -->
     </div>
   </div>
 
-  <!-- Modal for update price -->
-  <div class="modal fade" id="updatePriceModal" tabindex="-1" role="dialog" aria-labelledby="updatePriceModalLabel">
+  <!-- Modal for confirmation before deleting an item -->
+  <div class="modal fade" id="deleteItemModal" tabindex="-1" role="dialog" aria-labelledby="deleteItemModalLabel">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="updatePriceModalLabel">Update Price</h5>
+          <h4 class="modal-title" id="deleteItemModalLabel">Confirm Delete</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-          <input type="hidden" id="itemId">
-          <label for="newPrice">New Price:</label>
-          <input type="number" class="form-control" id="newPrice">
+          Are you sure you want to delete this item?
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-primary" onclick="updatePrice()">Update</button>
+          <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
         </div>
       </div>
     </div>
@@ -90,92 +71,123 @@
 
   <!-- Scripts -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <script>
- // Function to add item to the list
-function addItemToList() {
-  let itemName = $("#itemName").val();
-  let itemPrice = $("#itemPrice").val();
-  let itemImage = $("#itemImage").val();
+    // Array to store items before sending to the database
+    let itemList = [];
 
-  // Create item object
-  let item = {
-    title: itemName,
-    price: itemPrice,
-    image: itemImage
-  };
+    // Function to add item to the list
+    function addItemToList() {
+      let itemName = $("#itemName").val();
+      let itemPrice = $("#itemPrice").val();
+      let itemImage = $("#itemImage").val();
 
-  // Send AJAX request to add item
-  $.ajax({
-    type: "POST",
-    url: "/add-item",
-    contentType: "application/json",
-    data: JSON.stringify(item),
-    success: function(response) {
-      // Handle success response
-      alert("Item added successfully!");
-      // Reload the page to reflect the changes
-      location.reload();
-    },
-    error: function(xhr, status, error) {
-      // Handle error
-      console.error("Error adding item:", error);
-      alert("Error adding item: " + error);
+      // Create item object
+      let item = {
+        title: itemName,
+        price: itemPrice,
+        image: itemImage
+      };
+
+      // Add item to the list
+      itemList.push(item);
+
+      // Add item to display
+      let itemHtml = `<div class="item-panel">
+                        <div class="row">
+                          <div class="col-md-4">
+                            <img src="${item.image}" alt="${item.title}">
+                          </div>
+                          <div class="col-md-4">
+                            <h3>${item.title}</h3>
+                            <p>Price: ${item.price}</p>
+                          </div>
+                          <div class="col-md-4">
+                            <button class="btn btn-info btn-block mt-3" onclick="updateItemPrice(${itemList.length - 1})">Update Price</button>
+                            <button class="btn btn-danger btn-block mt-3" onclick="removeItem(${itemList.length - 1})">Remove</button>
+                          </div>
+                        </div>
+                      </div>`;
+      $("#itemList").append(itemHtml);
+
+      // Reset form fields
+      $("#itemName").val("");
+      $("#itemPrice").val("");
+      $("#itemImage").val("");
     }
-  });
-}
 
-
-
-    // Function to update item price
-    function updateItemPrice(itemId) {
-      $("#itemId").val(itemId);
-      $("#updatePriceModal").modal("show");
-    }
-
-    // Function to update price for an item
-    function updatePrice() {
-      let itemId = $("#itemId").val();
-      let newPrice = $("#newPrice").val();
-      // Send AJAX request to update price
-      $.ajax({
-        type: "POST",
-        url: "/update-item-price",
-        contentType: "application/json",
-        data: JSON.stringify({ id: itemId, price: newPrice }),
-        success: function(response) {
-          if (response.success) {
-            // Update the price displayed on the UI
-            $("#itemList").load(location.href + " #itemList>*", "");
-            $("#updatePriceModal").modal("hide");
-          } else {
-            alert("Error updating price: " + response.error);
-          }
-        },
-        error: function(xhr, status, error) {
-          alert("Error updating price: " + error);
-        }
+    // Function to remove item from the list and UI
+    function removeItem(index) {
+      itemList.splice(index, 1);
+      $("#itemList").empty();
+      itemList.forEach((item, idx) => {
+        let itemHtml = `<div class="item-panel">
+                          <div class="row">
+                            <div class="col-md-4">
+                              <img src="${item.image}" alt="${item.title}">
+                            </div>
+                            <div class="col-md-4">
+                              <h3>${item.title}</h3>
+                              <p>Price: ${item.price}</p>
+                            </div>
+                            <div class="col-md-4">
+                              <button class="btn btn-info btn-block mt-3" onclick="updateItemPrice(${idx})">Update Price</button>
+                              <button class="btn btn-danger btn-block mt-3" onclick="removeItem(${idx})">Remove</button>
+                            </div>
+                          </div>
+                        </div>`;
+        $("#itemList").append(itemHtml);
       });
     }
 
-    // Function to remove item from the database and UI
-    function removeItem(itemId) {
-      // Send AJAX request to remove item
+    // Function to update price for an item
+    function updateItemPrice(index) {
+      let newPrice = prompt("Enter the new price:");
+      if (newPrice !== null) {
+        itemList[index].price = newPrice;
+        $("#itemList").empty();
+        itemList.forEach((item, idx) => {
+          let itemHtml = `<div class="item-panel">
+                            <div class="row">
+                              <div class="col-md-4">
+                                <img src="${item.image}" alt="${item.title}">
+                              </div>
+                              <div class="col-md-4">
+                                <h3>${item.name}</h3>
+                                <p>Price: ${item.price}</p>
+                              </div>
+                              <div class="col-md-4">
+                                <button class="btn btn-info btn-block mt-3" onclick="updateItemPrice(${idx})">Update Price</button>
+                                <button class="btn btn-danger btn-block mt-3" onclick="removeItem(${idx})">
+                              </div>
+                            </div>
+                          </div>`;
+          $("#itemList").append(itemHtml);
+        });
+      }
+    }
+
+    // Function to send data to the database
+    function sendDataToDatabase() {
+      if (itemList.length === 0) {
+        alert("Please add at least one item to the list.");
+        return;
+      }
+
+      // Send data to the server using AJAX
       $.ajax({
         type: "POST",
-        url: "/remove-item",
+        url: "/update-items",
         contentType: "application/json",
-        data: JSON.stringify({ id: itemId }),
+        data: JSON.stringify(itemList),
         success: function(response) {
-          if (response.success) {
-            // Remove the item from the UI
-            $("#itemList").load(location.href + " #itemList>*", "");
-          } else {
-            alert("Error removing item: " + response.error);
-          }
+          // Clear the list and display success message
+          itemList = [];
+          $("#itemList").empty();
+          alert("Items successfully added to the database!");
         },
         error: function(xhr, status, error) {
-          alert("Error removing item: " + error);
+          // Handle errors
+          alert("Error adding items to the database: " + error);
         }
       });
     }
