@@ -22,6 +22,25 @@
 <body>
   <div class="container">
     <h2 class="mt-4">Admin Panel</h2>
+    
+    <!-- Form for adding new item -->
+    <form id="addItemForm" class="mb-4">
+      <div class="form-row">
+        <div class="col-md-4 mb-3">
+          <label for="itemName">Item Name:</label>
+          <input type="text" class="form-control" id="itemName" required>
+        </div>
+        <div class="col-md-4 mb-3">
+          <label for="itemPrice">Item Price:</label>
+          <input type="number" class="form-control" id="itemPrice" required>
+        </div>
+        <div class="col-md-4 mb-3">
+          <label for="itemImage">Item Image URL:</label>
+          <input type="text" class="form-control" id="itemImage" required>
+        </div>
+      </div>
+      <button type="button" class="btn btn-primary" onclick="addItemToList()">Add Item</button>
+    </form>
 
     <!-- Display existing items with update and remove buttons -->
     <div id="itemList">
@@ -73,6 +92,41 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <script>
+    // Function to add item to the list
+    function addItemToList() {
+      let itemName = $("#itemName").val();
+      let itemPrice = $("#itemPrice").val();
+      let itemImage = $("#itemImage").val();
+
+      // Create item object
+      let item = {
+        title: itemName,
+        price: itemPrice,
+        image: itemImage
+      };
+
+      // Send AJAX request to add item
+      $.ajax({
+        type: "POST",
+        url: "/add-item",
+        contentType: "application/json",
+        data: JSON.stringify(item),
+        success: function(response) {
+          // Handle success response
+          // For example, you can update the UI to display the newly added item
+          alert("Item added successfully!");
+          $("#itemList").load(location.href + " #itemList>*", "");
+          // Reset form fields
+          $("#itemName").val("");
+          $("#itemPrice").val("");
+          $("#itemImage").val("");
+        },
+        error: function(xhr, status, error) {
+          alert("Error adding item: " + error);
+        }
+      });
+    }
+
     // Function to update item price
     function updateItemPrice(itemId) {
       $("#itemId").val(itemId);
