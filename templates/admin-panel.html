@@ -188,6 +188,27 @@
     }
 
 
+// Function to update price for an item
+function updateItemPrice(itemId) {
+  let newPrice = prompt("Enter the new price:");
+  if (newPrice !== null) {
+    // Send AJAX request to update price
+    $.ajax({
+      type: "POST",
+      url: "/update-item-price",
+      contentType: "application/json",
+      data: JSON.stringify({ id: itemId, price: newPrice }),
+      success: function(response) {
+        // Handle success response
+        // For example, you can update the price displayed on the UI
+      },
+      error: function(xhr, status, error) {
+        // Handle error
+      }
+    });
+  }
+}
+
 // Function to remove item from the database and UI
 function removeItem(itemId) {
   // Send AJAX request to remove item
@@ -205,8 +226,6 @@ function removeItem(itemId) {
     }
   });
 }
-
-
    
   </script>
 </body>
