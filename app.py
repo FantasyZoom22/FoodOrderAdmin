@@ -28,7 +28,9 @@ def index():
 
 @app.route('/admin-panel')
 def admin_panel():
-    return render_template('admin-panel.html')
+     # Fetch all items from the database
+    items = Item.query.all()
+    return render_template('admin-panel.html', items=items)
 
 @app.route('/update-items', methods=['POST'])
 def update_items():
@@ -56,6 +58,33 @@ def update_items():
         return jsonify({'success': True})
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)})
+
+
+
+# Route to update item price
+@app.route('/update-item-price', methods=['POST'])
+def update_item_price():
+    data = request.get_json()
+    item = Item.query.get(data['id'])
+    if item:
+        item.price = data['price']
+        db.session.commit()
+        return jsonify({'success': True})
+    return jsonify({'success': False, 'error': 'Item not found'})
+
+# Route to remove item
+@app.route('/remove-item', methods=['POST'])
+def remove_item():
+    data = request.get_json()
+    item = Item.query.get(data['id'])
+    if item:
+        db.session.delete(item)
+        db.session.commit()
+        return jsonify({'success': True})
+    return jsonify({'success': False, 'error': 'Item not found'})
+
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
