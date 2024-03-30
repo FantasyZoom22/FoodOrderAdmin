@@ -31,57 +31,48 @@ def admin_panel():
     items = Item.query.all()
     return render_template('admin-panel.html', items=items)
 
-# Route to update item price
-@app.route('/update-item-price', methods=['POST'])
-def update_item_price():
+# Route to add item to the database
+@app.route('/add-item', methods=['POST'])
+def add_item():
     data = request.get_json()
-    item = Item.query.get(data['id'])
-    if item:
-        item.price = data['price']
-        db.session.commit()
-        return jsonify({'success': True})
-    return jsonify({'success': False, 'error': 'Item not found'})
-
-# Route to remove item
-@app.route('/remove-item', methods=['POST'])
-def remove_item():
-    data = request.get_json()
-    item = Item.query.get(data['id'])
-    if item:
-        db.session.delete(item)
-        db.session.commit()
-        return jsonify({'success': True})
-    return jsonify({'success': False, 'error': 'Item not found'})
-
-
-
-
-@app.route('/update-items', methods=['POST'])
-def update_items():
     try:
-        # Get the JSON data sent from the client-side
-        data = request.get_json()
-        
-        # Iterate over each item in the received data
-        with app.app_context():
-            for item_data in data:
-                # Check if the item with the same name already exists in the database
-                existing_item = Item.query.filter_by(title=item_data['title']).first()
-                if existing_item:
-                    # If the item exists, update its price and image URL
-                    existing_item.price = item_data['price']
-                    existing_item.image_url = item_data['image']
-                else:
-                    # If the item does not exist, create a new item entry
-                    new_item = Item(title=item_data['title'], price=item_data['price'], image_url=item_data['image'])
-                    db.session.add(new_item)
-        
-            # Commit changes to the database
-            db.session.commit()
-        
+        new_item = Item(title=data['title'], price=data['price'], image_url=data['image_url'])
+        db.session.add(new_item)
+        db.session.commit()
         return jsonify({'success': True})
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)})
+
+# Route to update item price in the database
+@app.route('/update-item-price', methods=['POST'])
+def update_item_price():
+    data = request.get_json()
+    try:
+        item = Item.query.get(data['id'])
+        if item:
+            item.price = data['price']
+            db.session.commit()
+            return jsonify({'success': True})
+        else:
+            return jsonify({'success': False, 'error': 'Item not found'})
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)})
+
+# Route to remove item from the database
+@app.route('/remove-item', methods=['POST'])
+def remove_item():
+    data = request.get_json()
+    try:
+        item = Item.query.get(data['id'])
+        if item:
+            db.session.delete(item)
+            db.session.commit()
+            return jsonify({'success': True})
+        else:
+            return jsonify({'success': False, 'error': 'Item not found'})
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)})
+
 
 if __name__ == '__main__':
     app.run(debug=True)
