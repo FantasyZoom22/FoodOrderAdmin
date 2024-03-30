@@ -93,39 +93,37 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <script>
     // Function to add item to the list
-    function addItemToList() {
-      let itemName = $("#itemName").val();
-      let itemPrice = $("#itemPrice").val();
-      let itemImage = $("#itemImage").val();
+function addItemToList() {
+  let itemName = $("#itemName").val();
+  let itemPrice = $("#itemPrice").val();
+  let itemImage = $("#itemImage").val();
 
-      // Create item object
-      let item = {
-        title: itemName,
-        price: itemPrice,
-        image: itemImage
-      };
+  // Create item object
+  let item = {
+    title: itemName,
+    price: itemPrice,
+    image: itemImage
+  };
 
-      // Send AJAX request to add item
-      $.ajax({
-        type: "POST",
-        url: "/add-item",
-        contentType: "application/json",
-        data: JSON.stringify(item),
-        success: function(response) {
-          // Handle success response
-          // For example, you can update the UI to display the newly added item
-          alert("Item added successfully!");
-          $("#itemList").load(location.href + " #itemList>*", "");
-          // Reset form fields
-          $("#itemName").val("");
-          $("#itemPrice").val("");
-          $("#itemImage").val("");
-        },
-        error: function(xhr, status, error) {
-          alert("Error adding item: " + error);
-        }
-      });
+  // Send AJAX request to add item
+  $.ajax({
+    type: "POST",
+    url: "/add-item",
+    contentType: "application/json",
+    data: JSON.stringify(item),
+    success: function(response) {
+      // Handle success response
+      // For example, you can update the UI to display the newly added item
+      alert("Item added successfully!");
+      // Reload the page to reflect the changes (you can also update the UI dynamically)
+      location.reload();
+    },
+    error: function(xhr, status, error) {
+      alert("Error adding item: " + error);
     }
+  });
+}
+
 
     // Function to update item price
     function updateItemPrice(itemId) {
