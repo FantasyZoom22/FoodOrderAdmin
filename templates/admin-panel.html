@@ -92,7 +92,7 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <script>
-    // Function to add item to the list
+ // Function to add item to the list
 function addItemToList() {
   let itemName = $("#itemName").val();
   let itemPrice = $("#itemPrice").val();
@@ -113,16 +113,18 @@ function addItemToList() {
     data: JSON.stringify(item),
     success: function(response) {
       // Handle success response
-      // For example, you can update the UI to display the newly added item
       alert("Item added successfully!");
-      // Reload the page to reflect the changes (you can also update the UI dynamically)
+      // Reload the page to reflect the changes
       location.reload();
     },
     error: function(xhr, status, error) {
+      // Handle error
+      console.error("Error adding item:", error);
       alert("Error adding item: " + error);
     }
   });
 }
+
 
 
     // Function to update item price
