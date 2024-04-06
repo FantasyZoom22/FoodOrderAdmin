@@ -228,7 +228,8 @@
 //   });
 // }
 
-// Function to remove item from the list and UI
+
+    // Function to remove item from the list and UI
 function removeItem(itemId) {
   // Send AJAX request to remove item
   $.ajax({
@@ -238,7 +239,7 @@ function removeItem(itemId) {
     data: JSON.stringify({ id: itemId }),
     success: function(response) {
       if (response.success) {
-        // Remove item from UI in real-time
+        // Remove item from UI
         $(`#itemList .item-panel[data-item-id=${itemId}]`).remove();
       } else {
         // Handle error
@@ -264,7 +265,7 @@ function updateItemPrice(itemId) {
       data: JSON.stringify({ id: itemId, price: newPrice }),
       success: function(response) {
         if (response.success) {
-          // Update price on UI in real-time
+          // Update price on UI
           $(`#itemList .item-panel[data-item-id=${itemId}] .item-price`).text("Price: " + newPrice);
         } else {
           // Handle error
@@ -278,6 +279,8 @@ function updateItemPrice(itemId) {
     });
   }
 }
+
+
     
   </script>
 </body>
