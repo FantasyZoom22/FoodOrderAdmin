@@ -266,7 +266,7 @@ function updateItemPrice(itemId) {
       success: function(response) {
         if (response.success) {
           // Update price on UI
-          $(`#itemList .item-panel[data-item-id=${itemId}] .item-price`).text("Price: " + newPrice);
+          $(`#itemList .item-panel[data-item-id=${itemId}] p.item-price`).text("Price: " + newPrice);
         } else {
           // Handle error
           alert("Error updating price.");
