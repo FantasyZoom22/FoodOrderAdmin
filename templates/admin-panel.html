@@ -189,71 +189,7 @@
     }
 
 
-//     // Function to update price for an item
-// function updateItemPrice(itemId) {
-//   let newPrice = prompt("Enter the new price:");
-//   if (newPrice !== null) {
-//     // Send AJAX request to update price
-//     $.ajax({
-//       type: "POST",
-//       url: "/update-item-price",
-//       contentType: "application/json",
-//       data: JSON.stringify({ id: itemId, price: newPrice }),
-//       success: function(response) {
-//         // Handle success response
-//         // For example, you can update the price displayed on the UI
-//       },
-//       error: function(xhr, status, error) {
-//         // Handle error
-//       }
-//     });
-//   }
-// }
-
-// // Function to remove item from the database and UI
-// function removeItem(itemId) {
-//   // Send AJAX request to remove item
-//   $.ajax({
-//     type: "POST",
-//     url: "/remove-item",
-//     contentType: "application/json",
-//     data: JSON.stringify({ id: itemId }),
-//     success: function(response) {
-//       // Handle success response
-//       // For example, you can remove the item from the UI
-//     },
-//     error: function(xhr, status, error) {
-//       // Handle error
-//     }
-//   });
-// }
-
-
-    // Function to remove item from the list and UI
-function removeItem(itemId) {
-  // Send AJAX request to remove item
-  $.ajax({
-    type: "POST",
-    url: "/remove-item",
-    contentType: "application/json",
-    data: JSON.stringify({ id: itemId }),
-    success: function(response) {
-      if (response.success) {
-        // Remove item from UI
-        $(`#itemList .item-panel[data-item-id=${itemId}]`).remove();
-      } else {
-        // Handle error
-        alert("Error removing item.");
-      }
-    },
-    error: function(xhr, status, error) {
-      // Handle error
-      alert("Error removing item: " + error);
-    }
-  });
-}
-
-// Function to update price for an item
+    // Function to update price for an item
 function updateItemPrice(itemId) {
   let newPrice = prompt("Enter the new price:");
   if (newPrice !== null) {
@@ -264,22 +200,33 @@ function updateItemPrice(itemId) {
       contentType: "application/json",
       data: JSON.stringify({ id: itemId, price: newPrice }),
       success: function(response) {
-        if (response.success) {
-          // Update price on UI
-          $(`#itemList .item-panel[data-item-id=${itemId}] p.item-price`).text("Price: " + newPrice);
-        } else {
-          // Handle error
-          alert("Error updating price.");
-        }
+        // Handle success response
+        // For example, you can update the price displayed on the UI
       },
       error: function(xhr, status, error) {
         // Handle error
-        alert("Error updating price: " + error);
       }
     });
   }
 }
 
+// Function to remove item from the database and UI
+function removeItem(itemId) {
+  // Send AJAX request to remove item
+  $.ajax({
+    type: "POST",
+    url: "/remove-item",
+    contentType: "application/json",
+    data: JSON.stringify({ id: itemId }),
+    success: function(response) {
+      // Handle success response
+      // For example, you can remove the item from the UI
+    },
+    error: function(xhr, status, error) {
+      // Handle error
+    }
+  });
+}
 
     
   </script>
